@@ -24,9 +24,10 @@ export default function App() {
     <NavigationContainer theme = {temaNavegacion}>
       <StatusBar style="dark" />
       <ClasesStack/>
-
     </NavigationContainer>
    </SafeAreaProvider>
   );
 }
+
+
 
