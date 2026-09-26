@@ -3,6 +3,8 @@ import { Pressable, Text, StyleSheet } from 'react-native';
 
 import { colors, spacing, radius } from '../theme';
 
+// Botón tipo chip para filtrar por nivel de clase.
+// Muestra si está activo o no y responde al toque del usuario.
 export default function NivelChip({ etiqueta, activo, onPress }) {
   return (
     <Pressable

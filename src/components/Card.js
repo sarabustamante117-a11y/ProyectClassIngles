@@ -5,16 +5,22 @@ import EtiquetaNivel from './EtiquetaNivel';
 import { colors, radius, spacing, sombra } from '../theme';
 import { formatearPrecio } from '../data/clases';
 
+// Tarjeta reutilizable para mostrar una clase en la lista principal.
+// Recibe la clase, el comportamiento al pulsar la tarjeta y la acción de reservar.
 export default function Card({ clase, onPress, onReservar }) {
   return (
     <Pressable onPress={onPress} style={styles.tarjeta}>
+      {/* Imagen principal de la clase */}
       <Image source={{ uri: clase.imagen }} style={styles.imagen} />
 
       <View style={styles.cuerpo}>
+        {/* Etiqueta del nivel de la clase */}
         <EtiquetaNivel nivel={clase.nivel} />
 
+        {/* Título de la clase */}
         <Text style={styles.titulo}>{clase.titulo}</Text>
 
+        {/* Fila con metadatos: valoración, duración y cupos */}
         <View style={styles.filaMeta}>
           <View style={styles.metaItem}>
             <Ionicons name="star" size={14} color={colors.acento} />
@@ -32,11 +38,13 @@ export default function Card({ clase, onPress, onReservar }) {
           </View>
         </View>
 
+        {/* Profesor de la clase */}
         <View style={styles.filaProfesor}>
           <Image source={{ uri: clase.profesor.foto }} style={styles.avatar} />
           <Text style={styles.profesor}>{clase.profesor.nombre}</Text>
         </View>
 
+        {/* Pie de la tarjeta con precio y botón de reserva */}
         <View style={styles.pie}>
           <Text style={styles.precio}>{formatearPrecio(clase.precio)}</Text>
           <Pressable

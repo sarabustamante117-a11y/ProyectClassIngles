@@ -2,7 +2,10 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { colors, spacing, coloresPorNivel } from '../theme';
 
+// Muestra la categoría del nivel de la clase con un color asociado.
+// Sirve para identificar rápidamente si es principiante, intermedio o avanzado.
 export default function EtiquetaNivel({ nivel }) {
+  // Elige el color que corresponde al nivel; si no coincide, usa el primario por defecto.
   const color = coloresPorNivel[nivel] || colors.primario;
 
   return (

@@ -1,5 +1,6 @@
 import { Platform } from 'react-native';
- 
+
+// Paleta de colores base para la app.
 export const colors = {
   fondo: '#F6F7FB',
   superficie: '#FFFFFF',
@@ -14,8 +15,8 @@ export const colors = {
   textoSuave: '#6B7280',
   borde: '#E5E7EB',
 };
- 
-// Escala de espaciado basada en múltiplos de 4
+
+// Escala de espaciado basada en múltiplos de 4 para mantener consistencia visual.
 export const spacing = {
   xs: 4,
   sm: 8,
@@ -24,23 +25,25 @@ export const spacing = {
   xl: 24,
   xxl: 32,
 };
- 
+
+// Radios de borde para redondear tarjetas, botones y chips.
 export const radius = {
   sm: 8,
   md: 14,
   lg: 20,
   full: 999,
 };
- 
+
+// Tipografías reutilizables para títulos, subtítulos y texto general.
 export const typography = {
-  titulo: { fontSize: 26, fontWeight: '800', color: colors.texto},
+  titulo: { fontSize: 26, fontWeight: '800', color: colors.texto },
   subtitulo: { fontSize: 18, fontWeight: '700', color: colors.texto },
   cuerpo: { fontSize: 15, color: colors.texto },
   secundario: { fontSize: 13, color: colors.textoSuave },
   etiqueta: { fontSize: 12, fontWeight: '600' },
 };
- 
- 
+
+// Sombra adaptable según la plataforma para que la UI se vea bien en iOS y Android.
 export const sombra = Platform.select({
   ios: {
     shadowColor: '#0F172A',
@@ -50,12 +53,13 @@ export const sombra = Platform.select({
   },
   android: { elevation: 3 },
 });
- 
+
+// Relación entre cada nivel de inglés y el color que se va a mostrar en la etiqueta.
 export const coloresPorNivel = {
   Basico: colors.exito,
   Intermedio: colors.primario,
   Avanzado: colors.acento,
   Conversacional: '#7C3AED',
 };
- 
+
 export default { colors, spacing, radius, typography, sombra, coloresPorNivel };

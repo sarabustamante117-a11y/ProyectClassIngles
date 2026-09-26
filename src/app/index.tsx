@@ -9,6 +9,7 @@ import { ThemedView } from '@/components/themed-view';
 import { WebBadge } from '@/components/web-badge';
 import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
 
+// Devuelve un texto con la pista de herramientas según el sistema operativo.
 function getDevMenuHint() {
   if (Platform.OS === 'web') {
     return <ThemedText type="small">use browser devtools</ThemedText>;
@@ -28,6 +29,7 @@ function getDevMenuHint() {
   );
 }
 
+// Pantalla inicial de ejemplo para la app Expo.
 export default function HomeScreen() {
   return (
     <ThemedView style={styles.container}>

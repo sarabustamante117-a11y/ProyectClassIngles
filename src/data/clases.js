@@ -1,5 +1,7 @@
+// Opciones de filtro disponibles para la vista de clases.
 export const NIVELES = ['Todos', 'Basico', 'Intermedio', 'Avanzado', 'Conversacional'];
- 
+
+// Base de datos local de ejemplo con las clases disponibles en la app.
 export const CLASES = [
   {
     id: '1',
@@ -122,6 +124,7 @@ export const CLASES = [
     horarios: ['Mar 8:00 p.m.', 'Sáb 8:00 a.m.'],
   },
 ];
- 
+
+// Formatea el precio para mostrarlo con formato monetario colombiano.
 export const formatearPrecio = (valor) =>
   '$' + valor.toLocaleString('es-CO') + ' COP';

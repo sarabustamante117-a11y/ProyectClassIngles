@@ -8,6 +8,7 @@ import { scheduleOnRN } from 'react-native-worklets';
 const INITIAL_SCALE_FACTOR = Dimensions.get('screen').height / 90;
 const DURATION = 600;
 
+// Capa de splash animada para ocultar la pantalla inicial con una transición visual.
 export function AnimatedSplashOverlay() {
   const [animate, setAnimate] = useState(false);
   const [visible, setVisible] = useState(true);
@@ -95,6 +96,7 @@ const glowKeyframe = new Keyframe({
   },
 });
 
+// Icono animado reutilizable para la pantalla principal y presentaciones visuales.
 export function AnimatedIcon() {
   return (
     <View style={styles.iconContainer}>

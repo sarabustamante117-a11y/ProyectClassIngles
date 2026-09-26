@@ -1,6 +1,6 @@
 /**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
+ * Colores usados en la app según el tema claro y oscuro.
+ * Este archivo centraliza la estética para mantener una apariencia consistente.
  */
 
 import '@/global.css';
@@ -26,6 +26,7 @@ export const Colors = {
 
 export type ThemeColor = keyof typeof Colors.light & keyof typeof Colors.dark;
 
+// Definición de familias tipográficas según la plataforma actual.
 export const Fonts = Platform.select({
   ios: {
     /** iOS `UIFontDescriptorSystemDesignDefault` */
@@ -51,6 +52,7 @@ export const Fonts = Platform.select({
   },
 });
 
+// Sistema de espaciado para mantener márgenes y paddings consistentes.
 export const Spacing = {
   half: 2,
   one: 4,

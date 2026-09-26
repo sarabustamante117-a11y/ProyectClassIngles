@@ -3,6 +3,7 @@ import { View, type ViewProps } from 'react-native';
 import { ThemeColor } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 
+// Vista reutilizable que cambia su color según el tema claro u oscuro actual.
 export type ThemedViewProps = ViewProps & {
   lightColor?: string;
   darkColor?: string;

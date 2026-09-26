@@ -3,20 +3,19 @@ import { View, Text, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { colors, spacing } from "../theme";
 
-export  default function EstadoVacio( { icono= 'calendar-outline', titulo, mensaje, onAction} ){
-
-     return (
-        <View  style={styles.contenedor}>
-            <View style={ styles.circulo}>
-                <Ionicons name ={ icono } size = {30} color={colors.primario}/>
-
-            </View>
-            <Text style={styles.titulo}>{ titulo }</Text>
-            <Text style={styles.mensaje}>{mensaje  }</Text>
-
-        </View>
-     );
-};
+// Vista reutilizable para mostrar un estado vacío cuando no hay resultados.
+// Se usa cuando la búsqueda no coincide con ninguna clase o no hay contenido disponible.
+export default function EstadoVacio({ icono = 'calendar-outline', titulo, mensaje, onAction }) {
+  return (
+    <View style={styles.contenedor}>
+      <View style={styles.circulo}>
+        <Ionicons name={icono} size={30} color={colors.primario} />
+      </View>
+      <Text style={styles.titulo}>{titulo}</Text>
+      <Text style={styles.mensaje}>{mensaje}</Text>
+    </View>
+  );
+}
 
 const styles = StyleSheet.create({
   contenedor: {

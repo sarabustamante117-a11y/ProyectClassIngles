@@ -11,13 +11,24 @@ import useResponsive from '../hooks/useResponsive';
 import { colors, radius, spacing, typography } from '../theme';
 import { CLASES, NIVELES } from '../data/clases';
 
+// Pantalla principal que muestra todas las clases disponibles y permite filtrarlas.
 export default function ClasesScreen({ navigation }) {
+  // Ajusta el contenido para no quedar tapado por la notch o barra del sistema.
   const insets = useSafeAreaInsets();
+
+  // Estado para el filtro de nivel actual.
   const [nivel, setNivel] = useState('Todos');
+
+  // Estado para el texto que escribe el usuario en la búsqueda.
   const [busqueda, setBusqueda] = useState('');
+
+  // Lista de clases que se muestran en pantalla.
   const [clases, setClases] = useState(CLASES);
+
+  // Detecta cuántas columnas deben usarse según el ancho de la pantalla.
   const { columnas } = useResponsive();
 
+  // Calcula la lista final según nivel y texto buscado.
   const resultados = useMemo(() => {
     const textoBusqueda = busqueda.trim().toLowerCase();
 
@@ -32,6 +43,7 @@ export default function ClasesScreen({ navigation }) {
     });
   }, [clases, nivel, busqueda]);
 
+  // Reduce el número de cupos cuando el usuario reserva una clase.
   const manejarReserva = (claseId) => {
     setClases((prevClases) =>
       prevClases.map((clase) => {

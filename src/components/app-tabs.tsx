@@ -3,6 +3,8 @@ import { useColorScheme } from 'react-native';
 
 import { Colors } from '@/constants/theme';
 
+// Barra de navegación inferior de la app.
+// Define los tabs principales y aplica colores según el tema actual.
 export default function AppTabs() {
   const scheme = useColorScheme();
   const colors = Colors[scheme === 'unspecified' ? 'light' : scheme];

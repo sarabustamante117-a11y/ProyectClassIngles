@@ -6,27 +6,39 @@ import { colors, radius, spacing, typography } from '../theme';
 import { formatearPrecio } from '../data/clases';
 import EtiquetaNivel from '../components/EtiquetaNivel';
 
+// Pantalla de detalle de una clase concreta.
+// Muestra información completa, permite elegir horario y reservar la clase.
 export default function DetalleClase({ route }) {
+  // Recibe la clase seleccionada y la función para actualizar el estado desde la pantalla anterior.
   const { clase, onReservar } = route.params;
+
+  // Estado local para poder modificar la clase actual y su cupo disponible.
   const [claseActual, setClaseActual] = useState(clase);
+
+  // Guarda el horario elegido por el usuario.
   const [horarioSeleccionado, setHorarioSeleccionado] = useState(clase.horarios[0]);
 
+  // Calcula los cupos disponibles para mostrar en pantalla.
   const cuposDisponibles = useMemo(() => Math.max(0, claseActual.cupos), [claseActual.cupos]);
 
+  // Función que se ejecuta al pulsar reservar.
   const reservar = () => {
     if (cuposDisponibles <= 0) {
       return;
     }
 
+    // Actualiza el número de cupos restantes de la clase actual.
     setClaseActual((prev) => ({
       ...prev,
       cupos: Math.max(0, prev.cupos - 1),
     }));
 
+    // Si la pantalla anterior esperaba una actualización, la ejecuta.
     if (onReservar) {
       onReservar(claseActual.id);
     }
 
+    // Muestra una alerta al usuario confirmando la reserva.
     Alert.alert(
       'Reserva exitosa',
       `Reservaste la clase ${claseActual.titulo} para ${horarioSeleccionado}.`,
