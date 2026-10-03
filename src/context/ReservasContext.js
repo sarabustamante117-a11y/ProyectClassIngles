@@ -49,7 +49,7 @@ export function ReservasProvider({children}){
     }, [reservas, cargando]);
 
     // Función para agregar una nueva reserva al estado.
-    const agregarReserva = useCallback((reserva) => {
+    const agregarReserva = useCallback((clase,horario) => {
         // Se prepara el objeto con la información de la reserva.
         // En este punto se asume que la función recibe la clase y el horario necesarios.
         const nueva = {

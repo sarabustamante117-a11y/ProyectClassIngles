@@ -1,5 +1,5 @@
-import { useContext } from "react";
-import { ReservasContext } from "./context/ReservasContext";
+import { useContext } from 'react';
+import { ReservasContext } from "../context/ReservasContext";
 
 // Hook personalizado para consumir el contexto de reservas desde cualquier componente.
 // Hace más fácil acceder al estado compartido sin repetir useContext en cada pantalla.

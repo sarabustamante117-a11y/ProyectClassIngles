@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { colors, radius, spacing, typography } from '../theme';
 import { formatearPrecio } from '../data/clases';
 import EtiquetaNivel from '../components/EtiquetaNivel';
+import useReserva  from '@/hooks/useReserva';
 
 // Pantalla de detalle de una clase concreta.
 // Muestra información completa, permite elegir horario y reservar la clase.
@@ -18,12 +19,25 @@ export default function DetalleClase({ route }) {
   // Guarda el horario elegido por el usuario.
   const [horarioSeleccionado, setHorarioSeleccionado] = useState(clase.horarios[0]);
 
+  const { agregarReserva } = useReserva();
+
   // Calcula los cupos disponibles para mostrar en pantalla.
   const cuposDisponibles = useMemo(() => Math.max(0, claseActual.cupos), [claseActual.cupos]);
 
   // Función que se ejecuta al pulsar reservar.
   const reservar = () => {
     if (cuposDisponibles <= 0) {
+      return;
+    }
+
+    const  resultado = agregarReserva(claseActual, horarioSeleccionado);
+
+    if (!resultado.ok){
+      Alert.alert(
+        'No se pudo reservar',
+        resultado.mensaje ?? 'Intentelo de nuevo.',
+        [{ text: 'Aceptar'}]
+      );
       return;
     }
 
