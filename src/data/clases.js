@@ -128,3 +128,26 @@ export const CLASES = [
 // Formatea el precio para mostrarlo con formato monetario colombiano.
 export const formatearPrecio = (valor) =>
   '$' + valor.toLocaleString('es-CO') + ' COP';
+
+// Convierte un texto como 'Lun 7:00 a.m.' en { dia: 'Lun', minutos: 420 }.
+// Los minutos se cuentan desde la medianoche.
+export function  convertirHorarioAMinutos(horario){
+  //1 primero separo por espacios  ['lun','7:00', 'a.m']
+  const [dia, hora, periodo] = horario.split(' ');
+
+  //2  separo la hora por ':' --> ['7','00']
+  const [horasTexto, minutosTexto] = hora.split(':');
+  let horas = Number(horasTexto);
+  const minutos = Number(minutosTexto);
+
+  //3 pasar de 12  a 24 horas
+  if (periodo === 'p.m.' && horas !== 12){
+    horas = horas + 12; // 6 pm --> 18
+  }
+  if (periodo === 'a.m.' && horas === 12){
+    horas = 0; // 12 a.m. es medianoche
+  }
+  //4  calcular los minutos  desde la medianoche
+  return {dia, minutos: horas * 60 + minutos};
+  
+}

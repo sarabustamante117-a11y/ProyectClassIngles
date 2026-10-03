@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useCallback, useMemo, createContext} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { convertirHorarioAMinutos } from '../data/clases';
 
 // Nombre de la clave que usaremos en AsyncStorage para guardar las reservas.
 const CLAVE_RESERVAS = '@reservas_ingles';
@@ -51,7 +52,6 @@ export function ReservasProvider({children}){
     // Función para agregar una nueva reserva al estado.
     const agregarReserva = useCallback((clase,horario) => {
         // Se prepara el objeto con la información de la reserva.
-        // En este punto se asume que la función recibe la clase y el horario necesarios.
         const nueva = {
             id: clase.id + '-' + horario,
             titulo: clase.titulo,
@@ -59,27 +59,46 @@ export function ReservasProvider({children}){
             profesor: clase.profesor.nombre,
             precio: clase.precio,
             horario: horario,
+            duracion: clase.duracion,
             creadoEn: new Date().toISOString(),
         };
+        // no repetir la misma clase en el mismo horario.
+        if (reservas.some((r) => r.id === nueva.id)) {
+            return {ok: false, mensaje: 'La reserva ya existe'};
+        }
+        //2 no reservas clases  que se crucen en la mismo horario.
+        const horarioNueva = convertirHorarioAMinutos(nueva.horario);
+        const inicioNueva = horarioNueva.minutos;
+        const finNueva = inicioNueva + nueva.duracion;
+        
+        const cruzada = reservas.find ((r) =>{
+            const horarioExistente = convertirHorarioAMinutos(r.horario);
 
-        // Objeto de resultado para indicar si la operación fue exitosa o no.
-        let resultado = {ok: true};
-
-        // Actualizamos el estado usando el valor previo para evitar conflictos.
-        setReservas((previas) => {
-            // Si ya existe la misma reserva, no la agregamos de nuevo.
-            if (previas.some((r) => r.id === nueva.id)) {
-                resultado = {ok: false, mensaje: 'La reserva ya existe'};
-                return previas;
+            //dias distintos no se pueden cruzar.
+            if (horarioExistente.dia !== horarioNueva.dia){
+                return false;
             }
+            const inicioExistente = horarioExistente.minutos;
+            const finExistente = inicioExistente + r.duracion;
+            // se cruzan si cada una empieza antes de que la otra termine
+            return inicioNueva < finExistente && inicioExistente < finNueva;
 
-            // Si no existe, la agregamos al inicio de la lista.
-            return [nueva, ...previas];
         });
 
-        // Devolvemos el resultado para que quien llame a la función pueda saber si se guardó o no.
-        return resultado;
-    }, []);
+        if (cruzada){
+            return {
+                ok: false,
+                mensaje:`Se cruza con ${cruzada.titulo} el ${cruzada.horario}.`,
+            };
+        }
+
+
+
+        // Si pasó la validación, la agregamos al inicio de la lista.
+        setReservas((previas) => [nueva, ...previas]);
+
+        return {ok: true};
+    }, [reservas]);
 
     // Creamos el valor del contexto para que lo consuman los componentes.
     const valor = useMemo(
@@ -98,5 +117,3 @@ export function ReservasProvider({children}){
         </ReservasContext.Provider>
     );
 }
-
-
