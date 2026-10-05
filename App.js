@@ -1,10 +1,10 @@
-import React from 'react';
+import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
-import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
+import { MD3LightTheme, PaperProvider } from 'react-native-paper';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import ClasesStack from './src/navigation/ClasesStack';
-import { colors } from './src/theme'
-
+import { ReservasProvider } from './src/hooks/context/ReservasContext';
+import InicioScreen from './src/screens/InicioScreen';
+import { colors } from './src/theme';
 
 const temaNavegacion = {
   ...DefaultTheme,
@@ -18,17 +18,25 @@ const temaNavegacion = {
   },
 };
 
+// Tema de React Native Paper con el color primario la app
+const temaPaper = {
+  ...MD3LightTheme,
+  colors: { ...MD3LightTheme.colors, primary: colors.primario },
+};
+
 export default function App() {
   return (
-   <SafeAreaProvider>
-    <NavigationContainer theme = {temaNavegacion}>
-      
-      <StatusBar style="dark" />
-      <ClasesStack/>
-    </NavigationContainer>
-   </SafeAreaProvider>
+    <SafeAreaProvider>
+      <PaperProvider theme={temaPaper}>
+        <ReservasProvider>
+          <NavigationContainer theme={temaNavegacion}>
+            <StatusBar style="dark" />
+            <InicioScreen />
+          </NavigationContainer>
+        </ReservasProvider>
+      </PaperProvider>
+    </SafeAreaProvider>
   );
 }
-
 
 
