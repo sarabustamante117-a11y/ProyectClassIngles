@@ -91,23 +91,28 @@ export function ReservasProvider({children}){
                 mensaje:`Se cruza con ${cruzada.titulo} el ${cruzada.horario}.`,
             };
         }
-
-
-
+   
         // Si pasó la validación, la agregamos al inicio de la lista.
         setReservas((previas) => [nueva, ...previas]);
 
         return {ok: true};
     }, [reservas]);
 
+    //funcion para cancelar una reserva a partir de su id
+    const cancelarReserva   = useCallback ((id) => {
+        //nos quedamos con todas las reservas menos la que tenga ese id
+        setReservas((previas) => previas.filter((r) => r.id !== id));
+    },[]);
+
     // Creamos el valor del contexto para que lo consuman los componentes.
     const valor = useMemo(
         () => ({
             cargando,
             agregarReserva,
+            cancelarReserva,
             reservas,
         }),
-        [cargando, agregarReserva, reservas]
+        [cargando, agregarReserva, cancelarReserva, reservas]
     );
 
     // Proveemos el valor del contexto a todos los componentes hijos.

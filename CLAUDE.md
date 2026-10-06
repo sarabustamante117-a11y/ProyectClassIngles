@@ -17,7 +17,7 @@ App para reservar clases de inglés con Expo + React Native en **JavaScript**. T
   `@expo/vector-icons`, `@react-native-async-storage/async-storage`, `@react-navigation/native`,
   `@react-navigation/native-stack`, `expo`, `expo-font`, `expo-status-bar`, `react`, `react-native`,
   `react-native-safe-area-context`, `react-native-screens`.
-- Ojo: `@react-navigation/bottom-tabs` **no** está instalado.
+- Agregadas con autorización de la profesora (2026-10-06): `@react-navigation/bottom-tabs` (barra de pestañas, hecha por la compañera en `InicioScreen`) y `react-native-paper` (componentes visuales; `PaperProvider` montado en `App.js`).
 
 ## Alcance a desarrollar
 1. **InicioScreen**: pantalla principal con el menú, navegación por pestañas (diseño del menú por definir).
