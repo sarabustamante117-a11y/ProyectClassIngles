@@ -2,7 +2,7 @@ import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { MD3LightTheme, PaperProvider } from 'react-native-paper';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { ReservasProvider } from './src/hooks/context/ReservasContext';
+import { ReservasProvider } from './src/context/ReservasContext';
 import InicioScreen from './src/screens/InicioScreen';
 import { colors } from './src/theme';
 
