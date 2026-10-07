@@ -11,7 +11,7 @@ import EstadoVacio from '@/components/EstadoVacio';
 //Pantalla que nos muestra la lista de reservar hechas por el usuario.
 export default function ReservasScreen(){
     //sacamos del contexto la lista de reservas
-    const { reservas } = useReserva();
+    const { reservas, cargando } = useReserva();
 
     //Margenes del sistema para no quedar debajo de la barra
     const insets  = useSafeAreaInsets();
