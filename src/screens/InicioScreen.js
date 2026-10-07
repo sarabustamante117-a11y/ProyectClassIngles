@@ -4,6 +4,8 @@ import { Icon, Text } from 'react-native-paper';
 import ClasesStack from '../navigation/ClasesStack';
 import { colors } from '../theme';
 
+import ReservasScreen from './ReservasScreen';
+
 const Tab = createBottomTabNavigator();
 
 // Pantallas temporales (después las cambias por ReservasScreen y PerfilScreen)
@@ -12,7 +14,6 @@ const Temporal = ({ nombre }) => (
     <Text variant="titleLarge">{nombre}</Text>
   </View>
 );
-const ReservasTemporal = () => <Temporal nombre="Reservas" />;
 const PerfilTemporal = () => <Temporal nombre="Perfil" />;
 
 // Menú con navegación tipo tab: izquierda = Reservas, centro = Inicio, derecha = Perfil
@@ -32,7 +33,7 @@ export default function InicioScreen() {
     >
       <Tab.Screen
         name="Reservas"
-        component={ReservasTemporal}
+        component={ReservasScreen}
         options={{
           tabBarIcon: ({ color, size }) => <Icon source="notebook" color={color} size={size} />,
         }}
