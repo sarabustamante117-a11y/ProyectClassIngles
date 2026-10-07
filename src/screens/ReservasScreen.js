@@ -1,11 +1,12 @@
 import React from 'react';
-import { View, Text, StyleSheet, FlatList} from 'react-native';
+import { View,StyleSheet, FlatList} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import {colors, spacing } from '../theme';
 import useReserva from '../hooks/useReserva';
 import { ActivityIndicator } from 'react-native-paper';
-import EstadoVacio from '@/components/EstadoVacio';
+import EstadoVacio from '../components/EstadoVacio';
+import TarjetaReserva from '../components/TarjetaReserva';
 
 
 //Pantalla que nos muestra la lista de reservar hechas por el usuario.
@@ -32,7 +33,7 @@ export default function ReservasScreen(){
                 data={reservas}
                 keyExtractor={(item) => item.id}
                 contentContainerStyle={styles.lista}
-                renderItem={({ item }) => <Text style={styles.titulo}>{item.titulo}</Text>}
+                renderItem={({ item }) => <TarjetaReserva reserva={item}/>}
                 ListEmptyComponent={
                     <EstadoVacio
                         icono = "calendar-outline"
