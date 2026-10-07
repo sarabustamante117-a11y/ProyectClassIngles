@@ -1,20 +1,12 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { View } from 'react-native';
-import { Icon, Text } from 'react-native-paper';
+import { Icon } from 'react-native-paper';
 import ClasesStack from '../navigation/ClasesStack';
 import { colors } from '../theme';
+import PerfilScreen from './PerfilScreen';
 
 import ReservasScreen from './ReservasScreen';
 
 const Tab = createBottomTabNavigator();
-
-// Pantallas temporales (después las cambias por ReservasScreen y PerfilScreen)
-const Temporal = ({ nombre }) => (
-  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-    <Text variant="titleLarge">{nombre}</Text>
-  </View>
-);
-const PerfilTemporal = () => <Temporal nombre="Perfil" />;
 
 // Menú con navegación tipo tab: izquierda = Reservas, centro = Inicio, derecha = Perfil
 export default function InicioScreen() {
@@ -47,7 +39,7 @@ export default function InicioScreen() {
       />
       <Tab.Screen
         name="Perfil"
-        component={PerfilTemporal}
+        component={PerfilScreen}
         options={{
           tabBarIcon: ({ color, size }) => <Icon source="account" color={color} size={size} />,
         }}
