@@ -1,15 +1,16 @@
-import React, { useMemo, useState } from 'react';
-import { View, Text, TextInput, StyleSheet, ScrollView, FlatList } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import { useMemo, useState } from 'react';
+import { FlatList, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import Card from '../components/Card';
-import NivelChip from '../components/NivelChip';
 import EstadoVacio from '../components/EstadoVacio';
+import NivelChip from '../components/NivelChip';
+import useReserva from '../hooks/useReserva';
 import useResponsive from '../hooks/useResponsive';
 
-import { colors, radius, spacing, typography } from '../theme';
 import { CLASES, NIVELES } from '../data/clases';
+import { colors, radius, spacing, typography } from '../theme';
 
 // Pantalla principal que muestra todas las clases disponibles y permite filtrarlas.
 export default function ClasesScreen({ navigation }) {
@@ -22,11 +23,26 @@ export default function ClasesScreen({ navigation }) {
   // Estado para el texto que escribe el usuario en la búsqueda.
   const [busqueda, setBusqueda] = useState('');
 
-  // Lista de clases que se muestran en pantalla.
-  const [clases, setClases] = useState(CLASES);
+  // Reservas reales guardadas en el contexto.
+  const { reservas } = useReserva();
 
   // Detecta cuántas columnas deben usarse según el ancho de la pantalla.
   const { columnas } = useResponsive();
+
+  // Calcula los cupos disponibles de cada clase a partir de las reservas reales:
+  // cupos disponibles = cupos totales - reservas guardadas de esa clase.
+  // Así los cupos solo bajan cuando una reserva se guarda bien, y suben si se cancela.
+  const clases = useMemo(() => {
+    return CLASES.map((clase) => {
+      // El id de cada reserva tiene la forma "idClase-horario" (ej: "1-Lun 7:00 a.m.").
+      const reservadas = reservas.filter((r) => r.id.split('-')[0] === clase.id).length;
+
+      return {
+        ...clase,
+        cupos: Math.max(0, clase.cupos - reservadas),
+      };
+    });
+  }, [reservas]);
 
   // Calcula la lista final según nivel y texto buscado.
   const resultados = useMemo(() => {
@@ -43,20 +59,9 @@ export default function ClasesScreen({ navigation }) {
     });
   }, [clases, nivel, busqueda]);
 
-  // Reduce el número de cupos cuando el usuario reserva una clase.
-  const manejarReserva = (claseId) => {
-    setClases((prevClases) =>
-      prevClases.map((clase) => {
-        if (clase.id !== claseId || clase.cupos <= 0) {
-          return clase;
-        }
-
-        return {
-          ...clase,
-          cupos: clase.cupos - 1,
-        };
-      })
-    );
+  // Abre el detalle de la clase, donde se elige el horario y se confirma la reserva.
+  const abrirDetalle = (clase) => {
+    navigation.navigate('DetalleClase', { clase });
   };
 
   return (
@@ -108,13 +113,9 @@ export default function ClasesScreen({ navigation }) {
         renderItem={({ item }) => (
           <Card
             clase={item}
-            onPress={() =>
-              navigation.navigate('DetalleClase', {
-                clase: item,
-                onReservar: manejarReserva,
-              })
-            }
-            onReservar={manejarReserva}
+            onPress={() => abrirDetalle(item)}
+            // El botón Reservar ya no resta cupos: lleva al detalle para elegir horario.
+            onReservar={() => abrirDetalle(item)}
           />
         )}
         showsVerticalScrollIndicator={false}
