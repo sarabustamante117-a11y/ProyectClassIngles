@@ -1,5 +1,5 @@
-import React, {useState, useEffect, useCallback, useMemo, createContext} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { createContext, useCallback, useEffect, useMemo, useState } from 'react';
 import { convertirHorarioAMinutos } from '../data/clases';
 
 // Nombre de la clave que usaremos en AsyncStorage para guardar las reservas.
@@ -9,7 +9,7 @@ const CLAVE_RESERVAS = '@reservas_ingles';
 export const ReservasContext = createContext(null);
 
 // Provider que encapsula el estado de las reservas y lo ofrece a los componentes hijos.
-export function ReservasProvider({children}){
+export function ReservasProvider({ children }) {
     // Estado principal: guarda la lista de reservas actuales.
     const [reservas, setReservas] = useState([]);
 
@@ -50,7 +50,13 @@ export function ReservasProvider({children}){
     }, [reservas, cargando]);
 
     // Función para agregar una nueva reserva al estado.
-    const agregarReserva = useCallback((clase,horario) => {
+    // Devuelve { ok: true } si se guardó o { ok: false, mensaje } si hubo un problema.
+    const agregarReserva = useCallback((clase, horario) => {
+        // Validación: no se puede reservar sin haber escogido un horario.
+        if (!horario) {
+            return { ok: false, mensaje: 'Elige un horario antes de reservar.' };
+        }
+
         // Se prepara el objeto con la información de la reserva.
         const nueva = {
             id: clase.id + '-' + horario,
@@ -62,47 +68,50 @@ export function ReservasProvider({children}){
             duracion: clase.duracion,
             creadoEn: new Date().toISOString(),
         };
-        // no repetir la misma clase en el mismo horario.
+
+        // No repetir la misma clase en el mismo horario.
         if (reservas.some((r) => r.id === nueva.id)) {
-            return {ok: false, mensaje: 'La reserva ya existe'};
+            return { ok: false, mensaje: 'La reserva ya existe' };
         }
-        //2 no reservas clases  que se crucen en la mismo horario.
+
+        // No reservar clases que se crucen en el mismo horario.
         const horarioNueva = convertirHorarioAMinutos(nueva.horario);
         const inicioNueva = horarioNueva.minutos;
         const finNueva = inicioNueva + nueva.duracion;
-        
-        const cruzada = reservas.find ((r) =>{
+
+        const cruzada = reservas.find((r) => {
             const horarioExistente = convertirHorarioAMinutos(r.horario);
 
-            //dias distintos no se pueden cruzar.
-            if (horarioExistente.dia !== horarioNueva.dia){
+            // Días distintos no se pueden cruzar.
+            if (horarioExistente.dia !== horarioNueva.dia) {
                 return false;
             }
+
             const inicioExistente = horarioExistente.minutos;
             const finExistente = inicioExistente + r.duracion;
-            // se cruzan si cada una empieza antes de que la otra termine
-            return inicioNueva < finExistente && inicioExistente < finNueva;
 
+            // Se cruzan si cada una empieza antes de que la otra termine.
+            return inicioNueva < finExistente && inicioExistente < finNueva;
         });
 
-        if (cruzada){
+        if (cruzada) {
             return {
                 ok: false,
-                mensaje:`Se cruza con ${cruzada.titulo} el ${cruzada.horario}.`,
+                mensaje: `Se cruza con ${cruzada.titulo} el ${cruzada.horario}.`,
             };
         }
-   
+
         // Si pasó la validación, la agregamos al inicio de la lista.
         setReservas((previas) => [nueva, ...previas]);
 
-        return {ok: true};
+        return { ok: true };
     }, [reservas]);
 
-    //funcion para cancelar una reserva a partir de su id
-    const cancelarReserva   = useCallback ((id) => {
-        //nos quedamos con todas las reservas menos la que tenga ese id
+    // Función para cancelar una reserva a partir de su id.
+    const cancelarReserva = useCallback((id) => {
+        // Nos quedamos con todas las reservas menos la que tenga ese id.
         setReservas((previas) => previas.filter((r) => r.id !== id));
-    },[]);
+    }, []);
 
     // Creamos el valor del contexto para que lo consuman los componentes.
     const valor = useMemo(
