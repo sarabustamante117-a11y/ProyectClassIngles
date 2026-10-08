@@ -6,6 +6,8 @@ import { ReservasProvider } from './src/context/ReservasContext';
 import InicioScreen from './src/screens/InicioScreen';
 import { colors } from './src/theme';
 
+// Configura el tema base de navegación para que el fondo, texto y bordes
+// de las pantallas coincidan con la identidad visual de la app.
 const temaNavegacion = {
   ...DefaultTheme,
   colors: {
@@ -18,12 +20,13 @@ const temaNavegacion = {
   },
 };
 
-// Tema de React Native Paper con el color primario la app
+// Tema visual de React Native Paper con el color principal de la aplicación.
 const temaPaper = {
   ...MD3LightTheme,
   colors: { ...MD3LightTheme.colors, primary: colors.primario },
 };
 
+// Componente raíz que compone el proveedor de reservas, navegación y tema.
 export default function App() {
   return (
     <SafeAreaProvider>
