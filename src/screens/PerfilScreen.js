@@ -8,10 +8,10 @@ import { colors } from '../theme';
 
 const CLAVE_PERFIL = '@perfil_ingles';
 
-// Opciones para "objetivo para aprender inglés"
+// Objetivos predefinidos para categorizar la finalidad del aprendizaje del usuario.
 const OBJETIVOS = ['Viajar', 'Trabajo', 'Estudios', 'Conversación'];
 
-// Va poniendo las barras solo: 25031998 -> 25/03/1998
+// Formatea la fecha mientras se escribe: 25031998 -> 25/03/1998 para mejorar la UX.
 const formatearFecha = (texto) => {
   const n = texto.replace(/\D/g, '').slice(0, 8);
   if (n.length <= 2) return n;
@@ -19,7 +19,7 @@ const formatearFecha = (texto) => {
   return n.slice(0, 2) + '/' + n.slice(2, 4) + '/' + n.slice(4);
 };
 
-// Revisa que la fecha exista y no sea futura (formato DD/MM/AAAA)
+// Verifica que la fecha sea real, válida y no superior a la fecha actual.
 const fechaValida = (texto) => {
   const m = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(texto);
   if (!m) return false;
@@ -34,7 +34,8 @@ const fechaValida = (texto) => {
   );
 };
 
-// Formulario: aparece lleno si ya hay perfil, vacío si no hay
+// Formulario reutilizable para crear o editar el perfil del usuario.
+// Si ya existe información guardada, llena automáticamente los campos en pantalla.
 function Formulario({ perfil, onGuardar, onBorrar }) {
   const [form, setForm] = useState({
     nombre: perfil?.nombre ?? '',
@@ -48,7 +49,7 @@ function Formulario({ perfil, onGuardar, onBorrar }) {
   });
   const [error, setError] = useState('');
 
-  // Actualiza solo el campo que se está escribiendo
+  // Actualiza solo el campo que el usuario está editando en ese momento.
   const cambiar = (campo) => (texto) => setForm({ ...form, [campo]: texto });
 
   const guardar = () => {
@@ -97,7 +98,7 @@ function Formulario({ perfil, onGuardar, onBorrar }) {
     });
   };
 
-  // Vacía el formulario y también borra el perfil guardado en el celular
+  // Limpia los campos del formulario y elimina el perfil almacenado localmente.
   const limpiar = () => {
     setForm({
       nombre: '',
@@ -196,7 +197,8 @@ export default function PerfilScreen() {
   const { valor: perfil, listo, actualizar } = useAlmacenamiento(CLAVE_PERFIL, null);
   const [mensaje, setMensaje] = useState('');
 
-  // Esperamos a que termine de leer el almacenamiento para no mostrar el formulario vacío por error
+  // Espera a completar la lectura del almacenamiento local para evitar mostrar
+  // un formulario vacío antes de confirmar si ya existe un perfil guardado.
   if (!listo) return null;
 
   return (

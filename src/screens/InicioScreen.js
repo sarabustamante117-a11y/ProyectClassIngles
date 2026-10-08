@@ -8,7 +8,9 @@ import ReservasScreen from './ReservasScreen';
 
 const Tab = createBottomTabNavigator();
 
-// Menú con navegación tipo tab: izquierda = Reservas, centro = Inicio, derecha = Perfil
+// Menú principal con tres secciones: reservas, inicio y perfil.
+// La ruta central muestra la lista de clases y el detalle, mientras que las
+// demás pantallas permiten consultar y administrar la información del usuario.
 export default function InicioScreen() {
   return (
     <Tab.Navigator
